@@ -1,6 +1,7 @@
 const statsValueData = document.querySelectorAll(".userStatData");
 const statsTypeData = document.querySelectorAll(".userTypeData");
 const setStatsButton = document.querySelector("#setStatsButton");
+const getOptiButton = document.querySelector("#getOptiButton");
 
 let statsValue = [];
 let statsType = [];
@@ -11,17 +12,19 @@ function Stat(value, type) {
     this.type = type
 }
 
-function getStats() {
-    statsValueData.forEach(e => {statsValue.push(parseInt(e.value, 10))});
-    statsTypeData.forEach(e => {statsType.push(e.value)});
+function Template(id, coeffs) {
+    this.id = id,
+    this.coeffs = coeffs
 }
 
-function setRuneStats() {
+const templateAttack = new Template('templateAttack', coeffsTemplateAttack)
+
+function setRune(value, type) {
     let runeStats = []
-    for (i=0; i<statsValue.length; i++) {
-        runeStats.push(new Stat(statsValue[i], statsType[i]));
+    for (i=0; i<value.length; i++) {
+        runeStats.push(new Stat(value[i], type[i]));
     }
-    Rune.stats = runeStats;
+    rune.stats = runeStats;
 }
 
 function hitsCalc(type) { 
@@ -37,18 +40,39 @@ function hitsCalc(type) {
     return 5;
 }
 
-function setHits() {
-    Rune.stats.forEach(stat => {
-        stat.hits = Math.round((stat.value / hitsCalc(stat.type)) * 10) / 10;
+function setHits(rune) {
+    rune.stats.forEach(stat => {
+        stat.hits = Math.round((stat.value / hitsCalc(stat.type) * 10) / 10)
     })
 }
 
-function getRune() {
-    getStats();
-    setRuneStats();
-    setHits();
-    console.log(Rune);
+function templateCalc(type, coeffs) {
+    coeffs.forEach(coeff => {
+        if (type == coeff.type) {
+            return coeff.value;
+        }
+    })
 }
 
-setStatsButton.onclick = getRune;
+function setTemplate(rune, template) {
+    totalHits = 0;
+    rune.forEach(stat => {
+        totalHits += stat.value * templateCalc(stat.type, template.coeffs);
+    })
+    rune.hits = totalHits;
+}
 
+function getStats() {
+    statsValueData.forEach(e => {statsValue.push(parseInt(e.value, 10))});
+    statsTypeData.forEach(e => {statsType.push(e.value)});
+}
+
+function getOpti() {
+    setHits(rune);
+    setTemplate(rune.stats, templateAttack);
+    console.log(rune.hits);
+    return rune.hits
+}
+
+setStatsButton.onclick = getStats;
+getOptiButton.onclick = getOpti;
