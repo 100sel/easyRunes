@@ -1,12 +1,11 @@
 const statsValueData = document.querySelectorAll(".userStatData");
 const statsTypeData = document.querySelectorAll(".userTypeData");
-const setStatsButton = document.querySelector("#setStatsButton");
 const getOptiButton = document.querySelector("#getOptiButton");
 const displayOpti = document.querySelector("#displayOpti");
 
 //runeDamage
-//let statsValue = [10, 21, 7, 5];
-//let statsType = ['speed', 'attackPercent', 'criDamagePercent', 'criRate'];
+let statsValue = [10, 21, 7, 5];
+let statsType = ['speed', 'attackPercent', 'criDamagePercent', 'criRate'];
 //runeBalanced
 //let statsValue = [10, 14, 14, 7];
 //let statsType = ['speed', 'attackPercent', 'hpPercent', 'accuracy'];
@@ -17,8 +16,8 @@ const displayOpti = document.querySelector("#displayOpti");
 //let statsValue = [10, 7, 10, 14];
 //let statsType = ['speed', 'attackPercent', 'criRate', 'criDamage'];
 
-let statsValue = [ ];
-let statsType = [ ];
+//let statsValue = [ ];
+//let statsType = [ ];
 let Rune = { };
 
 function Stat(value, type) {
@@ -159,15 +158,7 @@ function setTemplate(rune, ...template) {
     })
 }
 
-function setOpti() {
-    getStats();
-    setRune(Rune, statsValue, statsType);
-    setHits(Rune);
-    setTemplate(Rune, templateDamage, templateBalanced, templateSupport, templateNuker);
-    console.log(Rune);
-}
-
-function getOpti() {
+function showOpti() {
     Rune.efficiency.forEach(opti => {
         let runeOpti = document.createElement("div");
         runeOpti.innerHTML = opti.type + ' : ' + opti.value.toFixed(2);
@@ -175,5 +166,12 @@ function getOpti() {
     });
 }
 
-setStatsButton.onclick = setOpti;
+function getOpti() {
+    //getStats();
+    setRune(Rune, statsValue, statsType);
+    setHits(Rune);
+    setTemplate(Rune, templateDamage, templateBalanced, templateSupport, templateNuker);
+    showOpti();
+}
+
 getOptiButton.onclick = getOpti;
