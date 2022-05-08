@@ -134,18 +134,28 @@ function setRune(rune, value, type) {
 function hitsCalc(type) { 
     if (type.match(/Percent/)) {
         return 8;
-    } 
-    if (type.match(/Flat/)) {
-        return 0;
-    } 
+    }
     if (type.match == 'resistance') {
         return 12;
+    }
+    if (type.match == 'hpFlat') {
+        return 10;
+    } 
+    if (type.match == 'attackFlat' || type.match == 'defenseFlat') {
+        return 7;
     }
     return 6;
 }
 
 function setHits(rune) {
     rune.stats.forEach(stat => {
+        if (stat.type.match(/Flat/)) {
+            if (stat.type.match(/hp/)) {
+                stat.value = (stat.value / 100);
+            } else {
+                stat.value = stat.value / 7;
+            }
+        }
         stat.hits = stat.value / hitsCalc(stat.type);
     })
 }
