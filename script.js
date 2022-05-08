@@ -213,7 +213,12 @@ function getEfficiency(rune) {
 }
 
 function showOpti() {
+    let efficOrder = [ ];
     Rune.efficiency.forEach(effic => {
+        efficOrder.push(effic);
+    });
+    efficOrder.sort((a, b) => b.value - a.value );
+    efficOrder.forEach(effic => {
         let runeOpti = document.createElement("div");
         runeOpti.innerHTML = effic.type + ' : ' + effic.value;
         displayOpti.appendChild(runeOpti);
