@@ -201,14 +201,14 @@ function setOpti(rune, ...template) {
 function getEfficiency(rune) {
     let efficiency = [ ];
     rune.opti.forEach(opti => {
-        efficiency.push(new Stat((100 - ((10 - opti.value)*7)).toFixed(2), opti.type));
+        efficiency.push(new Stat(Math.floor(100 - ((10 - opti.value)*7)), opti.type));
     })
     let totalHits = 0;
     rune.stats.forEach(stat => {
         totalHits += stat.hits;
     })
     rune.efficiency = efficiency;
-    let nonOptiEfficiency = (100 - ((10 - totalHits)*7)).toFixed(2)
+    let nonOptiEfficiency = Math.floor(100 - ((10 - totalHits)*7));
     rune.nonOpti = [totalHits, nonOptiEfficiency];
 }
 
