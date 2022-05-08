@@ -18,12 +18,12 @@ function testDmg() {
 
 function testBlc() {
     statsValue = [10, 14, 14, 7];
-    statsType = ['speed', 'attackPercent', 'hpPercent', 'accuracy'];
+    statsType = ['speed', 'attackPercent', 'hpPercent', 'accuracyPercent'];
 }
 
 function testSup() {
     statsValue = [10, 21, 7, 7];
-    statsType = ['speed', 'hpPercent', 'defensePercent', 'accuracy'];
+    statsType = ['speed', 'hpPercent', 'defensePercent', 'accuracyPercent'];
 }
 
 function testNkr() {
@@ -165,7 +165,7 @@ function setOpti(rune, ...template) {
     template.forEach(template => {
         let totalHits = 0;
         rune.stats.forEach(stat => {
-            totalHits += (stat.hits * templateCalc(stat.type, template.coeffs));
+            totalHits += (stat.hits * templateCalc(stat.type, template.coeffs))
         })
         switch (template.id) {
             case 'templateDamage': 
@@ -191,14 +191,15 @@ function setOpti(rune, ...template) {
 function getEfficiency(rune) {
     let efficiency = [ ];
     rune.opti.forEach(opti => {
-        efficiency.push(new Stat((100 - ((9 - opti.value)*7)).toFixed(2), opti.type));
+        efficiency.push(new Stat((100 - ((10 - opti.value)*7)).toFixed(2), opti.type));
     })
     let totalHits = 0;
-    rune.stats.forEach(nonOpti => {
-        totalHits += nonOpti.hits;
+    rune.stats.forEach(stat => {
+        totalHits += stat.hits;
     })
     rune.efficiency = efficiency;
-    rune.nonOpti = totalHits;
+    let nonOptiEfficiency = (100 - ((10 - totalHits)*7)).toFixed(2)
+    rune.nonOpti = [totalHits, nonOptiEfficiency];
 }
 
 function showOpti() {
